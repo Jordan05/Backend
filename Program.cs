@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using MyApi.Services;
+using MyApi.Security;
 using MyApi.Settings;
 using MyApi.Models; // Agregar esta línea
 using Microsoft.Extensions.Options;
@@ -17,7 +18,7 @@ builder.Services.AddSingleton<UserService>();
 
 // Configuración de TokenService y JWT
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-builder.Services.AddSingleton<TokenService>();
+builder.Services.AddSingleton<MyApi.Security.TokenService>(); // Usar espacio de nombres completo para evitar ambigüedad
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretKey = jwtSettings["Key"];
@@ -114,6 +115,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Registrar middleware JWT
+app.UseMiddleware<JWTMiddleware>();
 
 app.MapControllers();
 
