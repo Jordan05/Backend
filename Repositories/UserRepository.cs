@@ -20,10 +20,10 @@ namespace MyApi.Repositories
             await _users.Find(user => true).ToListAsync();
 
         public async Task<User> GetAsync(int id) =>
-            await _users.Find<User>(user => user.Id == id).FirstOrDefaultAsync();
+            await _users.Find(user => user.Id == id).FirstOrDefaultAsync();
 
-        public async Task<User> GetAsync(string name) =>
-            await _users.Find<User>(user => user.Name == name).FirstOrDefaultAsync();
+        public async Task<User> GetAsync(string username) =>
+            await _users.Find(user => user.Username == username).FirstOrDefaultAsync();
 
         public async Task CreateAsync(User newUser) =>
             await _users.InsertOneAsync(newUser);

@@ -23,7 +23,7 @@ namespace MyApi.Services
             await _users.Find<User>(user => user.Id == id).FirstOrDefaultAsync();
 
         public async Task<User> GetAsync(string name) =>
-            await _users.Find<User>(user => user.Name == name).FirstOrDefaultAsync();
+            await _users.Find<User>(user => user.Username == name).FirstOrDefaultAsync();
 
         public async Task CreateAsync(User newUser) =>
             await _users.InsertOneAsync(newUser);
