@@ -10,10 +10,10 @@ namespace MyApi.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
+        private readonly ITokenService _tokenService;
         private readonly UserService _userService;
-        private readonly TokenService _tokenService;
 
-        public AuthController(UserService userService, TokenService tokenService)
+        public AuthController(UserService userService, ITokenService tokenService)
         {
             _userService = userService;
             _tokenService = tokenService;
@@ -35,7 +35,7 @@ namespace MyApi.Controllers
 
     public class LoginRequest
     {
-        public  required string UserName { get; set; }
+        public required string UserName { get; set; }
         public required string Password { get; set; }
     }
 }

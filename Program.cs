@@ -2,7 +2,7 @@ using MongoDB.Driver;
 using MyApi.Services;
 using MyApi.Security;
 using MyApi.Settings;
-using MyApi.Models; // Agregar esta línea
+using MyApi.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -18,7 +18,7 @@ builder.Services.AddSingleton<UserService>();
 
 // Configuración de TokenService y JWT
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-builder.Services.AddSingleton<MyApi.Security.TokenService>(); // Usar espacio de nombres completo para evitar ambigüedad
+builder.Services.AddSingleton<ITokenService, TokenService>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var secretKey = jwtSettings["Key"];

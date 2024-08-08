@@ -8,7 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MyApi.Services
 {
-    public class TokenService
+    public class TokenService : ITokenService
     {
         private readonly JwtSettings _jwtSettings;
 
@@ -35,6 +35,13 @@ namespace MyApi.Services
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+
+        public int? ValidateToken(string token)
+        {
+            // Implementación para validar el token y devolver el userId
+            // Aquí debes implementar la lógica de validación y extracción del userId desde el token
+            throw new NotImplementedException();
         }
     }
 }
