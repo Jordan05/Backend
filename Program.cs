@@ -1,7 +1,7 @@
 using MongoDB.Driver;
 using MyApi.Services;
 using MyApi.Settings;
-using MyApi.Models; // Agregar esta línea
+using MyApi.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -24,9 +24,9 @@ var secretKey = jwtSettings["Key"];
 var issuer = jwtSettings["Issuer"];
 var audience = jwtSettings["Audience"];
 
-if (string.IsNullOrEmpty(secretKey))
+if (string.IsNullOrEmpty(secretKey) || secretKey.Length < 32)
 {
-    throw new InvalidOperationException("La clave secreta de JWT no está configurada.");
+    throw new InvalidOperationException("La clave secreta de JWT no está configurada correctamente. Debe tener al menos 256 bits.");
 }
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

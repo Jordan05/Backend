@@ -20,7 +20,7 @@ namespace MyApi.Services
         public string GenerateToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Key); // Asegúrate de que Key tenga al menos 256 bits (32 caracteres)
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -30,7 +30,9 @@ namespace MyApi.Services
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = _jwtSettings.Issuer, // Configura el emisor (issuer)
+                Audience = _jwtSettings.Audience // Configura el público (audience)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
