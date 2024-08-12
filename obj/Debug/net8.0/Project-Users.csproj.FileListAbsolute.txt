@@ -107,3 +107,4 @@ C:\Users\HOME\Desktop\Users-Modify\Backend\obj\Debug\net8.0\refint\Project-Users
 C:\Users\HOME\Desktop\Users-Modify\Backend\obj\Debug\net8.0\Project-Users.pdb
 C:\Users\HOME\Desktop\Users-Modify\Backend\obj\Debug\net8.0\Project-Users.genruntimeconfig.cache
 C:\Users\HOME\Desktop\Users-Modify\Backend\obj\Debug\net8.0\ref\Project-Users.dll
+C:\Users\HOME\Desktop\Users-Modify\Backend\bin\Debug\net8.0\BCrypt.Net-Next.dll
