@@ -16,8 +16,7 @@ namespace MyApi.Controllers
 
         [HttpGet]
         [Authorize] // Requiere autenticación
-        public async Task<List<User>> Get() =>
-            await _userService.GetAsync();
+        public async Task<List<User>> Get() => await _userService.GetAsync();
 
         [HttpGet("{id}")]
         [Authorize] // Requiere autenticación
