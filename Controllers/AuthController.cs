@@ -30,17 +30,17 @@ namespace MyApi.Controllers
             }
 
             // Verifica si el usuario ya existe por nombre
-            var existingUserByName = await _userService.GetByNameAsync(request.Name);
+            var existingUserByName = await _userService.GetByNameAsync(request.Email);
             if (existingUserByName != null)
             {
-                return Conflict("El nombre de usuario ya está en uso.");
+                return Conflict("El email de usuario ya está en uso.");
             }
 
             // Crea un nuevo usuario
             var newUser = new User
             {
                 Id = request.Id,
-                Name = request.Name,
+                Email = request.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password) // Encripta la contraseña
             };
 
@@ -53,7 +53,7 @@ namespace MyApi.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var user = await _userService.GetAsync(request.Id);
-            if (user == null || user.Name != request.Name || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+            if (user == null || user.Email != request.Email || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
             {
                 return Unauthorized();
             }
@@ -66,14 +66,14 @@ namespace MyApi.Controllers
     public class RegisterRequest
     {
         public required int Id { get; set; }
-        public required string Name { get; set; }
+        public required string Email { get; set; }
         public required string Password { get; set; }
     }
 
     public class LoginRequest
     {
         public required int Id { get; set; }
-        public required string Name { get; set; }
+        public required string Email { get; set; }
         public required string Password { get; set; }
     }
 }

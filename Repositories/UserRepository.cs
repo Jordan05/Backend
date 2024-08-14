@@ -22,8 +22,8 @@ namespace MyApi.Repositories
         public async Task<User> GetAsync(int id) =>
             await _users.Find<User>(user => user.Id == id).FirstOrDefaultAsync();
 
-        public async Task<User> GetAsync(string name) =>
-            await _users.Find<User>(user => user.Name == name).FirstOrDefaultAsync();
+        public async Task<User> GetAsync(string email) =>
+            await _users.Find<User>(user => user.Email == email).FirstOrDefaultAsync();
 
         public async Task CreateAsync(User newUser) =>
             await _users.InsertOneAsync(newUser);

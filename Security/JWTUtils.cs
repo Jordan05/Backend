@@ -25,24 +25,27 @@ namespace MyApi.Security
         }
 
         public string GenerateToken(User user)
+{
+    var tokenHandler = new JwtSecurityTokenHandler();
+    var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+
+    var tokenDescriptor = new SecurityTokenDescriptor
+    {
+        Subject = new ClaimsIdentity(new[]
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
+            new Claim(ClaimTypes.Email, user.Email), // Claim para el email
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()) // Claim para el ID del usuario
+        }),
+        Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+        Issuer = _jwtSettings.Issuer,
+        Audience = _jwtSettings.Audience
+    };
 
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.Name),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+    var token = tokenHandler.CreateToken(tokenDescriptor);
+    return tokenHandler.WriteToken(token);
+}
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
 
         public int? ValidateToken(string token)
         {
