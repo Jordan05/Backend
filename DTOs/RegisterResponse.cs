@@ -1,6 +1,6 @@
 namespace MyApi.DTOs
     {
-    public class RegisterRequest
+    public class RegisterResponse
 {
     public required string Name { get; set; }
     public required string LastName { get; set; }

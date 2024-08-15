@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
 using MyApi.Services;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,13 +32,15 @@ namespace MyApi.Security
                 var userId = tokenService.ValidateToken(token);
                 if (userId != null)
                 {
-                    // Attach user to context on successful jwt validation
-                    context.Items["User"] = userService.GetAsync(userId.Value).Result;
+                    // Convertir userId a ObjectId
+                    var objectId = new ObjectId(userId.ToString());
+                    // Adjuntar usuario al contexto en caso de validación exitosa del JWT
+                    context.Items["User"] = userService.GetAsync(objectId).Result;
                 }
             }
             catch
             {
-                // Do nothing if jwt validation fails
+                // No hacer nada si la validación del JWT falla
             }
         }
     }

@@ -12,6 +12,7 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.7",
           "Microsoft.AspNetCore.OpenApi": "8.0.7",
           "Microsoft.IdentityModel.Tokens": "8.0.1",
+          "MongoDB.Bson": "2.28.0",
           "MongoDB.Driver": "2.28.0",
           "Swashbuckle.AspNetCore": "6.7.0",
           "System.IdentityModel.Tokens.Jwt": "8.0.1"

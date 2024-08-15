@@ -1,9 +1,7 @@
-namespace MyApi.DTOs
+using MongoDB.Bson;
+
+public class UserDTO
 {
-    public class UserDTO
-    {
-        public required int Id { get; set; }
-        public required string Email { get; set; }
-        public required string Password { get; set; }
-    }
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 }

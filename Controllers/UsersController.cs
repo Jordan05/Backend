@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyApi.Models;
 using MyApi.Services;
+using MongoDB.Bson;
 
 namespace MyApi.Controllers
 {
@@ -15,14 +16,19 @@ namespace MyApi.Controllers
             _userService = userService;
 
         [HttpGet]
-        [Authorize] // Requiere autenticación
+        [Authorize]
         public async Task<List<User>> Get() => await _userService.GetAsync();
 
         [HttpGet("{id}")]
-        [Authorize] // Requiere autenticación
-        public async Task<ActionResult<User>> Get(int id)
+        [Authorize]
+        public async Task<ActionResult<User>> Get(string id)
         {
-            var user = await _userService.GetAsync(id);
+            if (!ObjectId.TryParse(id, out var objectId))
+            {
+                return BadRequest("Invalid user ID.");
+            }
+
+            var user = await _userService.GetAsync(objectId);
 
             if (user is null)
             {
@@ -33,45 +39,55 @@ namespace MyApi.Controllers
         }
 
         [HttpPost]
-        [Authorize] // Requiere autenticación
+        [Authorize]
         public async Task<IActionResult> Post(User newUser)
         {
             await _userService.CreateAsync(newUser);
             var createdUser = newUser;
 
-            return CreatedAtAction(nameof(Get), new { id = createdUser.Id }, createdUser);
+            return CreatedAtAction(nameof(Get), new { id = createdUser.Id.ToString() }, createdUser);
         }
 
         [HttpPut("{id}")]
-        [Authorize] // Requiere autenticación
-        public async Task<IActionResult> Update(int id, User updatedUser)
+        [Authorize]
+        public async Task<IActionResult> Update(string id, User updatedUser)
         {
-            var user = await _userService.GetAsync(id);
+            if (!ObjectId.TryParse(id, out var objectId))
+            {
+                return BadRequest("Invalid user ID.");
+            }
+
+            var user = await _userService.GetAsync(objectId);
 
             if (user is null)
             {
                 return NotFound();
             }
 
-            updatedUser.Id = user.Id;
+            updatedUser.Id = objectId;
 
-            await _userService.UpdateAsync(id, updatedUser);
+            await _userService.UpdateAsync(objectId, updatedUser);
 
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        [Authorize] // Requiere autenticación
-        public async Task<IActionResult> Delete(int id)
+        [Authorize]
+        public async Task<IActionResult> Delete(string id)
         {
-            var user = await _userService.GetAsync(id);
+            if (!ObjectId.TryParse(id, out var objectId))
+            {
+                return BadRequest("Invalid user ID.");
+            }
+
+            var user = await _userService.GetAsync(objectId);
 
             if (user is null)
             {
                 return NotFound();
             }
 
-            await _userService.RemoveAsync(id);
+            await _userService.RemoveAsync(objectId);
 
             return NoContent();
         }
